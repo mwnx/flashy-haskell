@@ -1,6 +1,6 @@
 Flashy-Haskell
 ==============
-> Adds detail to haskell's default syntax in vim; lets you get... flashy...
+> Adds detail to haskell's default syntax in vim
 
 Flashy-Haskell is an extension to the Haskell syntax provided by default
 with the vim distribution. It matches more complex structures than just
@@ -19,7 +19,12 @@ But enough talking, let's take a look at what we've got:
 
 <img src="https://raw.githubusercontent.com/mwnx/i/master/flashy-haskell/flashy-haskell-fold.png" alt="Flashy Haskell folded example">
 
+License
+-------
+This software (this whole repository) is published under the MIT license.
+See the LICENSE file for details.
+
 Contributing
-============
+------------
 Feel free to contribute bug fixes, additional details, and extra colour
 schemes.
