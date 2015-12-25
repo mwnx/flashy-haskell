@@ -1,14 +1,35 @@
 " A pretty precise vim syntax for Haskell source code
-" Note: must be preprocessed with haskell.sed (in this same directory)
 
 syn sync minlines=50
 
 set iskeyword+='
 
+function! s:Sub(pat, sub)
+    let s:cmd = substitute(s:cmd, a:pat, a:sub, "g")
+endfunction
+
+" Preprocess special patterns in syntax definitions:
+function! s:Syn(...)
+    let s:cmd = join(a:000)
+    call s:Sub('NOT_OP',
+      \ '\\([^[:punct:]]\\|[()[]{}]\\|^\\|$\\)')
+    call s:Sub('KEYWORD',
+      \ '\\<\\(data\\|newtype\\|deriving\\|instance\\|class\\|where\\)\\>')
+    call s:Sub('VAR_ID',
+      \ '\\(\\<[a-z_][a-zA-Z0-9_'."'".']*\\>\\|([^a-zA-Z0-9_]\\+)\\)')
+    call s:Sub('CON_ID',
+      \ '\\(\\<[A-Z][a-zA-Z0-9_'."'".']*\\>\\|(:[^a-zA-Z0-9_]\\+)\\)')
+    call s:Sub('BLOCKEND',
+      \ '^\\n*[^[:space:]]')
+    exec 'syn '.s:cmd
+endfunction
+
+command -nargs=* Syn call s:Syn(<f-args>)
+
 " Comments -----------------------------------------------------------------
 syn clear hsLineComment
 syn clear hsBlockComment
-syn region hsLineComment fold
+Syn region hsLineComment fold
   \ start="NOT_OP\@<=---*\zeNOT_OP"
   \ end="^\(\s*--.*\)\@!"me=s-1
   \ end="^\s*-- [|*$^].*"me=s-1
@@ -20,7 +41,7 @@ syn region hsBlockComment fold start="{-\(#\|\s*[|*$]\)\@!" end="-}"
 syn cluster hsComment contains=hsLineComment,hsBlockComment
 
 " Documentation ------------------------------------------------------------
-syn region hsLineHaddock
+Syn region hsLineHaddock
   \ start="NOT_OP\@<=-- [|*$^]\zeNOT_OP"rs=e+1
   \ end="^\(^\s*--.*\)\@!"me=s-1
   \ containedin=ALLBUT,@hsAnyComment
@@ -34,7 +55,7 @@ syn cluster hsAnyComment contains=@hsComment,@hsHaddock
 
 " Keywords and symbols -----------------------------------------------------
 function! s:NewSymbol(name, symbol, ...)
-  exec 'syn match '.a:name.' "NOT_OP\@<=\('.a:symbol.'\)\zeNOT_OP" '.join(a:000)
+  exec 'Syn match '.a:name.' "NOT_OP\@<=\('.a:symbol.'\)\zeNOT_OP" '.join(a:000)
 endfunction
 command! -nargs=* HSNewSymbol call s:NewSymbol(<f-args>)
 
@@ -51,52 +72,52 @@ delcommand HSNewSymbol
 syn match hsUnit "()" 
 
 " Class --------------------------------------------------------------------
-syn region hsClass start="^\<class\>" end="BLOCKEND"me=s-1
-syn match hsClassName
+Syn region hsClass start="^\<class\>" end="BLOCKEND"me=s-1
+Syn match hsClassName
   \ "\(\<class\>\_s\+\(.*\(⇒\|=>\)\)\?\_s*\)\@<=CON_ID\ze\(.*\(⇒\|=>\).*$\)\@!"
   \ contained containedin=hsClass
 syn keyword hsClassKW class where contained containedin=hsClass
-syn region hsClassBody start="\(\<where\>\_s\)\@<=" end="BLOCKEND"me=s-1
+Syn region hsClassBody start="\(\<where\>\_s\)\@<=" end="BLOCKEND"me=s-1
   \ contained containedin=hsClass
   \ contains=TOP
-syn match hsClassFunctionName "^\s\+\zsVAR_ID\ze\s*\(::\|∷\)NOT_OP"
+Syn match hsClassFunctionName "^\s\+\zsVAR_ID\ze\s*\(::\|∷\)NOT_OP"
   \ contained containedin=hsClassBody
 
 " Data ---------------------------------------------------------------------
-syn region hsData start="^\<\(data\|newtype\)\>" end="BLOCKEND"me=s-1
-syn match hsDataName "\(\<\(data\|newtype\)\>\_s\+\)\@<=CON_ID"
+Syn region hsData start="^\<\(data\|newtype\)\>" end="BLOCKEND"me=s-1
+Syn match hsDataName "\(\<\(data\|newtype\)\>\_s\+\)\@<=CON_ID"
   \ contained containedin=hsData
 syn keyword hsDataKW data newtype where contained containedin=hsData
 
-syn match hsDataVariantName "\(NOT_OP[=|]\_s*\)\@<=CON_ID"
+Syn match hsDataVariantName "\(NOT_OP[=|]\_s*\)\@<=CON_ID"
   \ contained containedin=hsData
-syn match hsDataVariantName "^\s\+\zsCON_ID\ze\_s*\(::\|∷\)"
+Syn match hsDataVariantName "^\s\+\zsCON_ID\ze\_s*\(::\|∷\)"
   \ contained containedin=hsData "GADT
-syn match hsDataTypeAnnotLHS "VAR_ID\ze\s*\(::\|∷\)NOT_OP"
+Syn match hsDataTypeAnnotLHS "VAR_ID\ze\s*\(::\|∷\)NOT_OP"
   \ contained containedin=hsData
 
-syn region hsDataDeriving start="\<deriving\>" end="BLOCKEND"me=s-1
+Syn region hsDataDeriving start="\<deriving\>" end="BLOCKEND"me=s-1
   \ contained containedin=hsData
 syn keyword hsDeriving deriving contained containedin=hsDataDeriving
 
 " Type ---------------------------------------------------------------------
-syn region hsTypeD start="^\<type\>" end="BLOCKEND"me=s-1
+Syn region hsTypeD start="^\<type\>" end="BLOCKEND"me=s-1
   \ contains=ConId
-syn region hsTypeDLHS start="\<type\>" end="NOT_OP\@<==\zeNOT_OP"
+Syn region hsTypeDLHS start="\<type\>" end="NOT_OP\@<==\zeNOT_OP"
   \ contained containedin=hsTypeD
 syn keyword hsTypeDKW type contained containedin=hsTypeDLHS
 syn match hsTypeDName "CON_ID" contained containedin=hsTypeDLHS
 
 " Functions ----------------------------------------------------------------
-syn match hsTopTypeAnnotLHS "^VAR_ID\ze\s*\(::\|∷\)NOT_OP"
+Syn match hsTopTypeAnnotLHS "^VAR_ID\ze\s*\(::\|∷\)NOT_OP"
 
-syn region hsFunDefBody
+Syn region hsFunDefBody
   \ start="^[^[:space:]].*NOT_OP=NOT_OP"
   \ end="BLOCKEND"me=s-1
   \ fold contains=TOP
 
 " Type annotations ---------------------------------------------------------
-syn region hsTypeAnnot start="\(::\|∷\)"
+Syn region hsTypeAnnot start="\(::\|∷\)"
   \ end="^.*NOT_OP\(=\|::\|∷\)NOT_OP.*$"me=s-1
   \ end="[}|,)]"me=s-1
   \ end="KEYWORD"me=s-1
@@ -113,3 +134,5 @@ hi def link hsRightArrow         hsOperator
 hi def link hsBlockHaddock       hsHaddock
 hi def link hsLineHaddock        hsHaddock
 hi def link hsDataDeriving       hsData
+
+delcommand Syn
