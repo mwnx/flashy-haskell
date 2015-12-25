@@ -10,12 +10,16 @@ enabling folds for functions as well.
 
 It also comes with its own colour scheme that can be loaded by adding this
 line to your vimrc:
+
 > colorscheme flashy-haskell-dark
+
 (for now, only works on dark themed 256 colour terminals)
 
 But enough talking, let's take a look at what we've got:
 
 <img src="https://raw.githubusercontent.com/mwnx/i/master/flashy-haskell/flashy-haskell.png" alt="Flashy Haskell example">
+
+Folded functions:
 
 <img src="https://raw.githubusercontent.com/mwnx/i/master/flashy-haskell/flashy-haskell-fold.png" alt="Flashy Haskell folded example">
 
