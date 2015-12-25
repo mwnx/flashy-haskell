@@ -1,4 +1,5 @@
 " Test vimrc (use for testing colours and syntax without any other config)
+" Use with: vim -u test-vimrc some_haskell_file
 
 set nocompatible
 set runtimepath+=.
