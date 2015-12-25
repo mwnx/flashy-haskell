@@ -1,0 +1,15 @@
+" Test vimrc (use for testing colours and syntax without any other config)
+
+set nocompatible
+set runtimepath+=.
+set t_Co=256
+colorscheme flashy-haskell-dark
+
+autocmd BufEnter *
+  \ source /usr/local/share/vim/vim74/syntax/haskell.vim
+  \|source after/syntax/haskell.vim
+
+command! -bar Synstack
+  \ for id in synstack(line("."), col("."))
+  \|    echo synIDattr(id, "name")
+  \|endfor
