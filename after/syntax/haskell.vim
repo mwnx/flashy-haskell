@@ -110,7 +110,7 @@ Syn region hsTypeD start="^\<type\>" end="BLOCKEND"me=s-1
 Syn region hsTypeDLHS start="\<type\>" end="NOT_OP\@<==\zeNOT_OP"
   \ contained containedin=hsTypeD
 syn keyword hsTypeDKW type contained containedin=hsTypeDLHS
-syn match hsTypeDName "CON_ID" contained containedin=hsTypeDLHS
+Syn match hsTypeDName "CON_ID" contained containedin=hsTypeDLHS
 
 " Functions ----------------------------------------------------------------
 Syn match hsTopTypeAnnotLHS "^VAR_ID\ze\s*\(::\|∷\)NOT_OP"
