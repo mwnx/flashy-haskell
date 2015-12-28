@@ -27,6 +27,10 @@ endfunction
 command -nargs=* Syn call s:Syn(<f-args>)
 
 " Comments -----------------------------------------------------------------
+syn clear hsPragma
+syn region hsPragma start="{-#" end="#-}"
+  \ containedin=ALLBUT,@hsAnyComment
+
 syn clear hsLineComment
 syn clear hsBlockComment
 Syn region hsLineComment fold
