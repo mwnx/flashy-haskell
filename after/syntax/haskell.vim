@@ -75,6 +75,14 @@ delcommand HSNewSymbol
 
 syn match hsUnit "()" 
 
+" Functions ----------------------------------------------------------------
+Syn match hsTopTypeAnnotLHS "^VAR_ID\ze\s*\(::\|∷\)NOT_OP"
+
+Syn region hsFunDefBody
+  \ start="^[^[:space:]].*NOT_OP=NOT_OP"
+  \ end="BLOCKEND"me=s-1
+  \ fold contains=TOP
+
 " Class --------------------------------------------------------------------
 Syn region hsClass start="^\<class\>" end="BLOCKEND"me=s-1
 Syn match hsClassName
@@ -111,14 +119,6 @@ Syn region hsTypeDLHS start="\<type\>" end="NOT_OP\@<==\zeNOT_OP"
   \ contained containedin=hsTypeD
 syn keyword hsTypeDKW type contained containedin=hsTypeDLHS
 Syn match hsTypeDName "CON_ID" contained containedin=hsTypeDLHS
-
-" Functions ----------------------------------------------------------------
-Syn match hsTopTypeAnnotLHS "^VAR_ID\ze\s*\(::\|∷\)NOT_OP"
-
-Syn region hsFunDefBody
-  \ start="^[^[:space:]].*NOT_OP=NOT_OP"
-  \ end="BLOCKEND"me=s-1
-  \ fold contains=TOP
 
 " Type annotations ---------------------------------------------------------
 Syn region hsTypeAnnot start="\(::\|∷\)"
