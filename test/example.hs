@@ -33,6 +33,9 @@ helloWorld1 ∷ Monad m
 helloWorld1 = undefined "a long
     foldable
     function"
+  where
+    x :: Int
+    x = 3
 
 helloWorld2 ∷ Int -> Int -> String
 helloWorld2 a b = helloWorld1 . undefined

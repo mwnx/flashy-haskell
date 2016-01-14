@@ -8,7 +8,7 @@ simple keywords, enabling a wider variety of colourings. For instance, it
 matches whole `data`, `class`, or function blocks, and is thus capable of
 enabling folds for functions as well.
 
-It also comes with its own colour scheme that can be loaded by adding this
+It also comes with its own colour scheme, which can be loaded by adding this
 line to your vimrc:
 
 > colorscheme flashy-haskell-dark
