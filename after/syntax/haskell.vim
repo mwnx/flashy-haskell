@@ -29,7 +29,7 @@ command -nargs=* Syn call s:Syn(<f-args>)
 " Comments -----------------------------------------------------------------
 syn clear hsPragma
 syn region hsPragma start="{-#" end="#-}"
-  \ containedin=ALLBUT,@hsAnyComment
+  \ containedin=ALLBUT,@hsAnyComment,hsString
 
 syn clear hsLineComment
 syn clear hsBlockComment
@@ -37,10 +37,10 @@ Syn region hsLineComment fold
   \ start="NOT_OP\@<=---*\zeNOT_OP"
   \ end="^\(\s*--.*\)\@!"me=s-1
   \ end="^\s*-- [|*$^].*"me=s-1
-  \ containedin=ALLBUT,@hsAnyComment
+  \ containedin=ALLBUT,@hsAnyComment,hsString
 syn region hsBlockComment fold start="{-\(#\|\s*[|*$]\)\@!" end="-}"
   \ contains=hsBlockComment
-  \ containedin=ALLBUT,hsLineComment,@hsHaddock
+  \ containedin=ALLBUT,hsLineComment,@hsHaddock,hsString
 
 syn cluster hsComment contains=hsLineComment,hsBlockComment
 
@@ -48,9 +48,9 @@ syn cluster hsComment contains=hsLineComment,hsBlockComment
 Syn region hsLineHaddock
   \ start="NOT_OP\@<=-- [|*$^]\zeNOT_OP"rs=e+1
   \ end="^\(^\s*--.*\)\@!"me=s-1
-  \ containedin=ALLBUT,@hsAnyComment
+  \ containedin=ALLBUT,@hsAnyComment,hsString
 syn region hsBlockHaddock start="{-\s*[|*$]" end="-}"
-  \ containedin=ALLBUT,@hsComment,hsLineHaddock
+  \ containedin=ALLBUT,@hsComment,hsLineHaddock,hsString
 syn region hsBlockComment_ transparent start="{-"ms=e+1 end="-}"
   \ contained containedin=hsBlockHaddock
 

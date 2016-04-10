@@ -44,3 +44,5 @@ helloWorld2 a b = helloWorld1 . undefined
 (+-) =
     blah blah
     blah
+
+stringWithComments = "-- ^-- |-- {- {-# #-}"
